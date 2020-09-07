@@ -1,0 +1,33 @@
+pipeline{
+    agent any
+    stages{
+        stage('Checkout'){
+            steps{
+                git 'https://github.com/ashishdubey195/DevOpsClassCodes.git'
+            }
+        }
+        stage('Compile'){
+            steps{
+                sh 'mvn compile'
+            }
+        }
+        stage('test'){
+            steps{
+                sh 'mvn test'
+            }
+        }
+        stage('build'){  
+        steps{
+            sh 'mvn package'
+        }  
+        }
+        stage('Deployment'){
+            steps{
+                echo "Deployment"
+                sh 'sudo cp /var/lib/jenkins/workspace/addressbookpipeline/target/addressbook.war /home/ashishdubey/Downloads/apache-tomcat/webapps/'
+             sh 'sudo sh /home/ashishdubey/Downloads/apache-tomcat/bin/shutdown.sh'
+             sh 'sudo sh /home/ashishdubey/Downloads/apache-tomcat/bin/startup.sh'
+            } 
+                 }
+    }
+}
